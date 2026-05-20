@@ -92,10 +92,7 @@ PHASE_LEVELS = [
 
 class DigitCNN(nn.Module):
     """CNN para clasificación - Optimizada para 128x128
-    
-    Arquitectura unificada (5 capas conv + 4 FC, ~5.93M parámetros):
-    32 -> 64 -> 128 -> 256 -> 512 channels.
-    Idéntica al resto de experimentos para garantizar comparabilidad.
+
     """
     
     def __init__(self, num_classes=10, input_size=128, input_channels=3):
