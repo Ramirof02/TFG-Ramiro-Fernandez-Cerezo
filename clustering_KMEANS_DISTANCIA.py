@@ -2,10 +2,8 @@
 Sistema de Clustering con Autoencoder + K-Means para Curriculum Learning
 =========================================================================
 
-Este script organiza el dataset de dígitos en grupos de dificultad configurables
+Este script organiza el dataset en grupos de dificultad configurables
 usando dos niveles de granularidad:
-1. Clustering dentro de cada dígito (0-9)
-2. Clustering global considerando todos los dígitos
 
 Framework: PyTorch
 """
@@ -70,7 +68,6 @@ class Config:
         # Device
         config.DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
-        # Dígitos (mantener para compatibilidad)
         config.DIGITS = list(range(10))
         
         return config
@@ -558,7 +555,7 @@ def perform_clustering(embeddings, labels, paths,
         kmeans_models[int(clase)] = kmeans
         
         print(f"   Clase {clase}: {n_clusters_class} clusters K-Means, "
-              f"{n_images} imágenes → {images_per_level} por nivel")
+              f"{n_images} imágenes = {images_per_level} por nivel")
     
     # ========================================================================
     # Train/val split estratificado
@@ -630,11 +627,6 @@ def perform_clustering(embeddings, labels, paths,
         #                      El clustering ya operó con etiquetas ruidosas, lo
         #                      que afecta a la asignación de niveles, pero la
         #                      etiqueta visible al clasificador en val es limpia.
-        #   - train_only     → ruidosa SOLO si split=='train' Y is_noisy[i];
-        #                      val siempre limpio. Idéntica regla que en
-        #                      pre_clustering. La diferencia entre los dos modos
-        #                      reside en qué etiquetas usó el K-Means: ruidosas
-        #                      en A (afecta a niveles), limpias en B.
         clean_label = int(labels_clean[i])
         is_noisy_i = bool(is_noisy[i])
         if noise_mode in ('pre_clustering', 'train_only'):
@@ -669,7 +661,7 @@ def perform_clustering(embeddings, labels, paths,
         count = sum(1 for item in metadata if item['difficulty_level'] == level)
         level_counts[level] = count
         percentage = (count / len(metadata)) * 100
-        bar = '█' * max(1, int(percentage / 2))
+        bar = '-' * max(1, int(percentage / 2))
         print(f"      Level {level:02d}: {count:5d} imágenes ({percentage:5.2f}%) {bar}")
     
     # Calcular estadísticas de uniformidad
@@ -1011,9 +1003,6 @@ def main():
              '"pre_clustering" (Opción A: el K-Means usa etiquetas ruidosas, '
              'lo que afecta a la asignación de niveles; el ruido es visible al '
              'clasificador en train); '
-             '"train_only" (Opción B: el K-Means usa etiquetas limpias, los '
-             'niveles son correctos; el ruido solo se ve al guardar imágenes '
-             'de train en sus carpetas de clase).'
     )
     parser.add_argument(
         '--output_suffix',
@@ -1221,8 +1210,8 @@ def main():
     #   - labels_noisy : versión ruidosa (idéntica a labels_clean si noise_level=0)
     #   - is_noisy     : máscara booleana de qué muestras fueron ruidificadas
     # Y, según noise_mode, decidimos qué array pasamos como `labels` al clustering:
-    #   - clean / train_only → labels_clean (clustering opera con etiquetas limpias)
-    #   - pre_clustering     → labels_noisy (clustering opera con etiquetas ruidosas)
+    #   - clean  labels_clean (clustering opera con etiquetas limpias)
+    #   - pre_clustering     labels_noisy (clustering opera con etiquetas ruidosas)
     # ------------------------------------------------------------------------
 
     labels_clean = np.asarray(labels).astype(int).copy()
@@ -1322,11 +1311,11 @@ def main():
     val_count = sum(1 for item in metadata if item['split'] == 'val')
     
     print(f"\n Estadísticas:")
-    print(f"   • Total de imágenes: {len(metadata)}")
-    print(f"   • Train: {train_count} ({train_count/len(metadata)*100:.1f}%)")
-    print(f"   • Validation: {val_count} ({val_count/len(metadata)*100:.1f}%)")
-    print(f"   • Niveles de dificultad: {Config.N_CLUSTERS_GLOBAL} (level_00 a level_{Config.N_CLUSTERS_GLOBAL-1:02d})")
-    print(f"   • Dimensión latente: {Config.LATENT_DIM}")
+    print(f"   Total de imágenes: {len(metadata)}")
+    print(f"   Train: {train_count} ({train_count/len(metadata)*100:.1f}%)")
+    print(f"   Validation: {val_count} ({val_count/len(metadata)*100:.1f}%)")
+    print(f"   Niveles de dificultad: {Config.N_CLUSTERS_GLOBAL} (level_00 a level_{Config.N_CLUSTERS_GLOBAL-1:02d})")
+    print(f"   Dimensión latente: {Config.LATENT_DIM}")
     print("\n Próximo paso:")
     print("   Usa los datasets train/ y val/ para entrenar tu red neuronal con curriculum learning!")
     print("="*80)
