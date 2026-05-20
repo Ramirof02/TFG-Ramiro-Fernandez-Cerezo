@@ -108,7 +108,7 @@ class DigitsConfig(DatasetConfig):
     """
     Configuración para dataset Digits (dígitos manuscritos)
     
-    Dataset: ~10,160 imágenes de dígitos 0-9
+    Dataset: aprox 10,160 imágenes de dígitos 0-9
     Resolución: 128x128
     Clases: 10 (dígitos 0-9)
     """
@@ -187,7 +187,7 @@ class CIFAR10RGBConfig(DatasetConfig):
     
     Dataset: 60,000 imágenes (50,000 train + 10,000 test)
     Selección: 5000 imágenes aleatorias del conjunto completo
-    Resolución: 32x32 → resize a 128x128
+    Resolución: 32x32  resize a 128x128
     Clases: 10 (airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck)
     Color: RGB NATIVO (sin conversión a grayscale)
     
@@ -299,8 +299,8 @@ def print_config_summary(dataset_name):
     print(f"   Input:  {config.input_path}")
     print(f"   Output: {config.output_path}")
     print(f"\n  IMÁGENES:")
-    print(f"   Tamaño original: {config.image_size}×{config.image_size}")
-    print(f"   Resize para entrenamiento: {config.resize_to}×{config.resize_to}")
+    print(f"   Tamaño original: {config.image_size}x{config.image_size}")
+    print(f"   Resize para entrenamiento: {config.resize_to}x{config.resize_to}")
     print(f"   Canales: {config.channels}")
     if config.num_classes:
         print(f"   Clases: {config.num_classes}")
