@@ -526,7 +526,7 @@ def plot_metrics_comparison(all_metrics, output_dir):
     plt.savefig(metrics_plot, dpi=150, bbox_inches='tight')
     plt.close()
     
-    print(f"  ✓ {metrics_plot.name}")
+    print(f"  {metrics_plot.name}")
 
 
 # ============================================================================
@@ -651,7 +651,7 @@ def save_detailed_report(all_metrics, rankings, df, output_dir):
         f.write("FIN DEL REPORTE\n")
         f.write("="*80 + "\n")
     
-    print(f"  ✓ {report_file.name}")
+    print(f"  {report_file.name}")
 
 
 # ============================================================================
@@ -692,7 +692,7 @@ def main():
     # Guardar CSV
     csv_path = Path(OUTPUT_DIR) / 'comparative_metrics.csv'
     df.to_csv(csv_path, index=False)
-    print(f"\n✓ Tabla guardada: {csv_path}")
+    print(f"\n Tabla guardada: {csv_path}")
     
     # Crear rankings
     print("\n" + "="*70)
