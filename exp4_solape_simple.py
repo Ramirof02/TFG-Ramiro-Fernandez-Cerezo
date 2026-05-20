@@ -3,7 +3,6 @@ Experimento 4: Curriculum con Overlap Simple
 ============================================
 Cada fase incluye datos actuales + fase anterior completa.
 
-ACTUALIZADO: Usa estructura train/val separada
 
 Ejecutar: python exp4_solape_simple.py
 """
@@ -86,9 +85,6 @@ PHASE_LEVELS = [[0,1], [2,3], [4,5], [6,7], [8,9]]  # 10 niveles en 5 fases
 class DigitCNN(nn.Module):
     """CNN para clasificación - Optimizada para 128×128
     
-    Arquitectura unificada (5 capas conv + 4 FC, ~5.93M parámetros):
-    32 -> 64 -> 128 -> 256 -> 512 channels.
-    Idéntica al resto de experimentos para garantizar comparabilidad.
     """
     
     def __init__(self, num_classes=10, input_size=128, input_channels=3):
